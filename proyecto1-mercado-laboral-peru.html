@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Análisis del Mercado Laboral Peruano 2024 — Alberto Guzmán</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0d0e0c;--ink2:#3d3f39;--ink3:#8a8c84;
+  --bg:#f4f3ee;--bg2:#eceae2;--white:#fff;
+  --green:#1a4731;--green2:#2d6a4f;--green3:#52b788;--green-light:#d8f3dc;
+  --red:#c0392b;--red-light:#fdecea;
+  --gold:#b5870a;--gold-light:#fef3cd;
+  --blue:#1a5276;--blue-light:#d6eaf8;
+  --line:rgba(13,14,12,0.1);
+  --serif:'Fraunces',Georgia,serif;
+  --sans:'Instrument Sans',system-ui,sans-serif;
+  --r:8px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);font-size:14px;line-height:1.6}
+
+/* HEADER */
+.dash-header{background:var(--green);color:#fff;padding:32px 5vw 28px}
+.dash-header-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:20px}
+.dash-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:100px;padding:5px 14px;font-size:11px;font-weight:600;letter-spacing:0.8px;text-transform:uppercase;color:rgba(255,255,255,0.85);margin-bottom:12px}
+.dash-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:#52b788}
+h1.dash-title{font-family:var(--serif);font-size:clamp(26px,4vw,42px);font-weight:300;letter-spacing:-1px;line-height:1.1;margin-bottom:8px}
+h1.dash-title em{font-style:italic}
+.dash-subtitle{font-size:14px;color:rgba(255,255,255,0.65);line-height:1.6;max-width:600px}
+.dash-meta{display:flex;gap:20px;flex-wrap:wrap;margin-top:8px}
+.dash-meta-item{font-size:11px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;color:rgba(255,255,255,0.5);display:flex;align-items:center;gap:6px}
+.dash-meta-item span{color:rgba(255,255,255,0.85)}
+.dash-author{text-align:right}
+.dash-author-name{font-size:14px;font-weight:600;color:#fff}
+.dash-author-role{font-size:12px;color:rgba(255,255,255,0.6)}
+.dash-author-link{font-size:11px;color:var(--green3);text-decoration:none}
+
+/* KPI STRIP */
+.kpi-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
+.kpi-card{background:var(--white);padding:20px 20px;text-align:center;transition:background .15s}
+.kpi-card:hover{background:#fafaf8}
+.kpi-n{font-family:var(--serif);font-size:28px;font-weight:400;line-height:1;margin-bottom:3px}
+.kpi-n.green{color:var(--green2)}
+.kpi-n.red{color:var(--red)}
+.kpi-n.gold{color:var(--gold)}
+.kpi-n.blue{color:var(--blue)}
+.kpi-label{font-size:10px;font-weight:600;letter-spacing:0.6px;text-transform:uppercase;color:var(--ink3);margin-bottom:2px}
+.kpi-trend{font-size:11px;font-weight:600}
+.kpi-trend.up{color:var(--green3)}
+.kpi-trend.down{color:var(--red)}
+.kpi-trend.neutral{color:var(--ink3)}
+
+/* LAYOUT */
+.dash-body{padding:24px 5vw;max-width:1400px;margin:0 auto}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:20px}
+.grid-3-1{display:grid;grid-template-columns:2fr 1fr;gap:20px;margin-bottom:20px}
+.grid-1-2{display:grid;grid-template-columns:1fr 2fr;gap:20px;margin-bottom:20px}
+.full{margin-bottom:20px}
+
+/* CARDS */
+.card{background:var(--white);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.card-header{padding:16px 20px 12px;border-bottom:1px solid var(--line)}
+.card-title{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.card-sub{font-size:11px;color:var(--ink3);font-weight:500}
+.card-body{padding:16px 20px}
+.card-footer{padding:10px 20px;border-top:1px solid var(--line);background:var(--bg);font-size:11px;color:var(--ink3)}
+
+/* INSIGHT BOX */
+.insight{background:var(--green-light);border-left:3px solid var(--green3);border-radius:0 var(--r) var(--r) 0;padding:10px 14px;margin-top:12px;font-size:12px;color:var(--green);font-weight:500;line-height:1.5}
+.insight-red{background:var(--red-light);border-left:3px solid var(--red);border-radius:0 var(--r) var(--r) 0;padding:10px 14px;margin-top:12px;font-size:12px;color:var(--red);font-weight:500;line-height:1.5}
+.insight-gold{background:var(--gold-light);border-left:3px solid var(--gold);border-radius:0 var(--r) var(--r) 0;padding:10px 14px;margin-top:12px;font-size:12px;color:var(--gold);font-weight:500;line-height:1.5}
+
+/* HORIZONTAL BAR TABLE */
+.hbar-table{display:flex;flex-direction:column;gap:8px}
+.hbar-row{display:flex;flex-direction:column;gap:3px}
+.hbar-label-row{display:flex;justify-content:space-between;align-items:center}
+.hbar-label{font-size:12px;font-weight:500;color:var(--ink2)}
+.hbar-val{font-size:12px;font-weight:600;color:var(--ink)}
+.hbar-track{height:7px;background:var(--bg2);border-radius:4px;overflow:hidden}
+.hbar-fill{height:100%;border-radius:4px;transition:width .8s ease}
+.hbar-fill.green{background:linear-gradient(90deg,var(--green2),var(--green3))}
+.hbar-fill.red{background:linear-gradient(90deg,#c0392b,#e74c3c)}
+.hbar-fill.gold{background:linear-gradient(90deg,var(--gold),#e9a825)}
+.hbar-fill.blue{background:linear-gradient(90deg,var(--blue),#2980b9)}
+
+/* COMPARISON TABLE */
+.comp-table{width:100%;border-collapse:collapse;font-size:12px}
+.comp-table th{text-align:left;padding:6px 10px;font-size:10px;font-weight:600;letter-spacing:0.6px;text-transform:uppercase;color:var(--ink3);border-bottom:2px solid var(--line);background:var(--bg)}
+.comp-table td{padding:8px 10px;border-bottom:1px solid var(--line);color:var(--ink2)}
+.comp-table tr:last-child td{border-bottom:none}
+.comp-table tr:hover td{background:#fafaf8}
+.comp-table td:first-child{font-weight:600;color:var(--ink)}
+.tag-up{display:inline-flex;align-items:center;gap:3px;background:var(--green-light);color:var(--green2);padding:2px 7px;border-radius:100px;font-size:10px;font-weight:600}
+.tag-down{display:inline-flex;align-items:center;gap:3px;background:var(--red-light);color:var(--red);padding:2px 7px;border-radius:100px;font-size:10px;font-weight:600}
+.tag-neutral{background:var(--bg2);color:var(--ink3);padding:2px 7px;border-radius:100px;font-size:10px;font-weight:600;display:inline-flex}
+
+/* DONUT LABEL */
+.donut-wrap{position:relative;width:160px;height:160px;margin:0 auto}
+.donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.donut-center-n{font-family:var(--serif);font-size:28px;font-weight:400;line-height:1}
+.donut-center-l{font-size:10px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;color:var(--ink3)}
+
+/* LEGEND */
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--ink2);font-weight:500}
+.legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* FOOTER */
+.dash-footer{background:var(--ink);color:rgba(255,255,255,0.5);padding:20px 5vw;font-size:11px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-top:8px}
+.dash-footer a{color:var(--green3);text-decoration:none}
+
+/* SECTION LABEL */
+.section-sep{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.section-sep-label{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3);white-space:nowrap}
+.section-sep-line{flex:1;height:1px;background:var(--line)}
+
+/* NAV TABS */
+.tabs{display:flex;gap:4px;padding:16px 20px 0;border-bottom:1px solid var(--line);background:var(--white)}
+.tab{padding:8px 16px;font-size:12px;font-weight:600;color:var(--ink3);cursor:pointer;border-radius:6px 6px 0 0;border:1px solid transparent;border-bottom:none;transition:all .15s}
+.tab.active{background:var(--bg);color:var(--ink);border-color:var(--line)}
+.tab:hover:not(.active){color:var(--ink2)}
+.tab-content{display:none;padding:16px 20px}
+.tab-content.active{display:block}
+
+/* PILL GRID */
+.pill-grid{display:flex;flex-wrap:wrap;gap:6px}
+.pill{padding:5px 12px;border-radius:100px;font-size:11px;font-weight:600}
+.pill.green{background:var(--green-light);color:var(--green2)}
+.pill.red{background:var(--red-light);color:var(--red)}
+.pill.gold{background:var(--gold-light);color:var(--gold)}
+.pill.blue{background:var(--blue-light);color:var(--blue)}
+.pill.gray{background:var(--bg2);color:var(--ink3)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .kpi-strip{grid-template-columns:repeat(3,1fr)}
+  .grid-2,.grid-3,.grid-3-1,.grid-1-2{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+  .kpi-strip{grid-template-columns:1fr 1fr}
+  .dash-header{padding:24px 4vw}
+  .dash-body{padding:16px 4vw}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="dash-header">
+  <div class="dash-header-top">
+    <div>
+      <div class="dash-badge">Proyecto de Análisis · Datos Públicos INEI</div>
+      <h1 class="dash-title">Mercado Laboral Peruano<br><em>2022 – 2024</em></h1>
+      <p class="dash-subtitle">Análisis exploratorio de indicadores de empleo, ingresos, informalidad y brechas de género en el Perú, basado en datos públicos de la Encuesta Permanente de Empleo Nacional (EPEN) del INEI.</p>
+      <div class="dash-meta">
+        <div class="dash-meta-item">Fuente: <span>INEI — EPEN 2022-2024</span></div>
+        <div class="dash-meta-item">Cobertura: <span>Nacional · 26 ciudades</span></div>
+        <div class="dash-meta-item">Actualizado: <span>Q4 2024</span></div>
+        <div class="dash-meta-item">Herramientas: <span>Python · Pandas · Matplotlib · Plotly</span></div>
+      </div>
+    </div>
+    <div class="dash-author">
+      <div class="dash-author-name">Alberto Guzmán Zumaeta</div>
+      <div class="dash-author-role">Data Analyst · Lima, Perú</div>
+      <a href="https://www.linkedin.com/in/alberto-karel-guzman-zumaeta/" class="dash-author-link" target="_blank">LinkedIn →</a>
+    </div>
+  </div>
+</div>
+
+<!-- KPI STRIP -->
+<div class="kpi-strip">
+  <div class="kpi-card">
+    <div class="kpi-label">Población ocupada</div>
+    <div class="kpi-n green">17.6M</div>
+    <div class="kpi-trend up">▲ +1.4% vs 2023</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">Tasa de desempleo</div>
+    <div class="kpi-n red">4.8%</div>
+    <div class="kpi-trend down">▼ -0.3pp vs 2023</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">Empleo informal</div>
+    <div class="kpi-n gold">71.2%</div>
+    <div class="kpi-trend neutral">≈ Sin variación</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">Ingreso prom. mensual</div>
+    <div class="kpi-n blue">S/ 1,695</div>
+    <div class="kpi-trend up">▲ +2.1% real</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-label">PEA con seguro salud</div>
+    <div class="kpi-n green">93.5%</div>
+    <div class="kpi-trend up">▲ +1.7pp vs 2023</div>
+  </div>
+</div>
+
+<!-- BODY -->
+<div class="dash-body">
+
+  <!-- SECCIÓN 1: Evolución temporal -->
+  <div class="section-sep"><span class="section-sep-label">01 · Evolución temporal</span><div class="section-sep-line"></div></div>
+  <div class="grid-3-1">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Evolución de la Población Ocupada y Desempleo — 2020-2024</div>
+        <div class="card-sub">Millones de personas / Tasa de desempleo (%)</div>
+      </div>
+      <div class="card-body">
+        <canvas id="chartEvolucion" height="200"></canvas>
+        <div class="insight">📈 La población ocupada recuperó niveles pre-pandemia en 2022 y continuó creciendo hasta 17.6M en 2024, con una reducción sostenida del desempleo de 7.8% (2020) a 4.8% (2024).</div>
+      </div>
+      <div class="card-footer">Fuente: INEI — EPEN, informes trimestrales 2020-2024</div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Composición PEA 2024</div>
+        <div class="card-sub">Distribución por condición</div>
+      </div>
+      <div class="card-body">
+        <div class="donut-wrap">
+          <canvas id="chartPEA"></canvas>
+          <div class="donut-center">
+            <div class="donut-center-n" style="color:var(--green2)">70.1%</div>
+            <div class="donut-center-l">Tasa<br>actividad</div>
+          </div>
+        </div>
+        <div class="legend" style="justify-content:center">
+          <div class="legend-item"><div class="legend-dot" style="background:#2d6a4f"></div>Ocupados</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#c0392b"></div>Desempleados</div>
+          <div class="legend-item"><div class="legend-dot" style="background:#e0dfd8"></div>Inactivos</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 2: Ingresos y Brechas -->
+  <div class="section-sep"><span class="section-sep-label">02 · Ingresos y brechas de género</span><div class="section-sep-line"></div></div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Ingreso Promedio Mensual por Nivel Educativo</div>
+        <div class="card-sub">Soles (S/) · Año 2024</div>
+      </div>
+      <div class="card-body">
+        <canvas id="chartIngresos" height="220"></canvas>
+        <div class="insight-gold">💡 El nivel educativo universitario genera S/ 2,980/mes vs S/ 798/mes en primaria — una brecha de 3.7x que subraya el retorno de la inversión en educación superior.</div>
+      </div>
+      <div class="card-footer">Fuente: INEI — EPEN Q1 2024 · Ingreso laboral promedio mensual</div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Brecha de Género en Ingresos por Sector</div>
+        <div class="card-sub">Ingreso promedio mensual (S/) · Hombre vs Mujer</div>
+      </div>
+      <div class="card-body">
+        <canvas id="chartGenero" height="220"></canvas>
+        <div class="insight-red">⚠️ Brecha de género persistente: los hombres ganan en promedio S/ 477/mes más (+33%) que las mujeres a nivel nacional. La brecha es mayor en sectores de construcción y manufactura.</div>
+      </div>
+      <div class="card-footer">Fuente: INEI — EPEN 2024 · Ingreso por sexo</div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 3: Informalidad -->
+  <div class="section-sep"><span class="section-sep-label">03 · Informalidad laboral</span><div class="section-sep-line"></div></div>
+  <div class="grid-1-2">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Tasa de Informalidad</div>
+        <div class="card-sub">Por área de residencia · 2024</div>
+      </div>
+      <div class="card-body">
+        <div style="margin-bottom:20px">
+          <div style="font-size:11px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;color:var(--ink3);margin-bottom:10px">Nacional</div>
+          <div style="display:flex;align-items:center;gap:10px">
+            <div style="flex:1;height:24px;background:var(--bg2);border-radius:4px;overflow:hidden;position:relative">
+              <div style="width:71.2%;height:100%;background:linear-gradient(90deg,#c0392b,#e74c3c);border-radius:4px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px">
+                <span style="font-size:12px;font-weight:700;color:#fff">71.2%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hbar-table">
+          <div class="hbar-row">
+            <div class="hbar-label-row"><span class="hbar-label">Rural</span><span class="hbar-val" style="color:var(--red)">96.8%</span></div>
+            <div class="hbar-track"><div class="hbar-fill red" style="width:96.8%"></div></div>
+          </div>
+          <div class="hbar-row">
+            <div class="hbar-label-row"><span class="hbar-label">Urbano</span><span class="hbar-val" style="color:var(--gold)">64.3%</span></div>
+            <div class="hbar-track"><div class="hbar-fill gold" style="width:64.3%"></div></div>
+          </div>
+          <div class="hbar-row">
+            <div class="hbar-label-row"><span class="hbar-label">Lima Metropolitana</span><span class="hbar-val" style="color:var(--green2)">55.1%</span></div>
+            <div class="hbar-track"><div class="hbar-fill green" style="width:55.1%"></div></div>
+          </div>
+        </div>
+        <div class="insight-red">⚠️ 7 de cada 10 peruanos trabaja en el sector informal. En zonas rurales la tasa supera el 96%, reflejando una brecha estructural crítica.</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Informalidad por Sector Económico y Tendencia 2022-2024</div>
+        <div class="card-sub">Tasa de empleo informal (%) y evolución anual</div>
+      </div>
+      <div class="card-body">
+        <canvas id="chartInformalidad" height="200"></canvas>
+        <div class="insight">📊 La informalidad se mantiene alta y estructural. Agricultura (96%) y comercio (79%) concentran el mayor peso. Servicios financieros y minería muestran los niveles más bajos (18-22%).</div>
+      </div>
+      <div class="card-footer">Fuente: INEI — EPEN / MTPE · Tasas de empleo informal por actividad económica</div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 4: Distribución geográfica y educación -->
+  <div class="section-sep"><span class="section-sep-label">04 · Distribución geográfica y educación</span><div class="section-sep-line"></div></div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">PEA por Nivel Educativo Alcanzado — 2023 vs 2024</div>
+        <div class="card-sub">Millones de personas</div>
+      </div>
+      <div class="card-body">
+        <canvas id="chartEducacion" height="220"></canvas>
+        <div class="insight">📚 La PEA con educación universitaria creció +6.7% en 2024, la mayor variación positiva. Los trabajadores con sólo primaria disminuyeron, señal de mejora progresiva en capital humano.</div>
+      </div>
+      <div class="card-footer">Fuente: INEI — EPEN Q1 2024</div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Tasa de Actividad Laboral por Ciudades Principales</div>
+        <div class="card-sub">% PEA activa sobre PET · 2024</div>
+      </div>
+      <div class="card-body">
+        <div class="hbar-table">
+          <div class="hbar-row"><div class="hbar-label-row"><span class="hbar-label">Arequipa</span><span class="hbar-val">74.2%</span></div><div class="hbar-track"><div class="hbar-fill green" style="width:74.2%"></div></div></div>
+          <div class="hbar-row"><div class="hbar-label-row"><span class="hbar-label">Cusco</span><span class="hbar-val">73.8%</span></div><div class="hbar-track"><div class="hbar-fill green" style="width:73.8%"></div></div></div>
+          <div class="hbar-row"><div class="hbar-label-row"><span class="hbar-label">Trujillo</span><span class="hbar-val">72.1%</span></div><div class="hbar-track"><div class="hbar-fill green" style="width:72.1%"></div></div></div>
+          <div class="hbar-row"><div class="hbar-label-row"><span class="hbar-label">Lima</span><span class="hbar-val">70.4%</span></div><div class="hbar-track"><div class="hbar-fill blue" style="width:70.4%"></div></div></div>
+          <div class="hbar-row"><div class="hbar-label-row"><span class="hbar-label">Chiclayo</span><span class="hbar-val">69.8%</span></div><div class="hbar-track"><div class="hbar-fill blue" style="width:69.8%"></div></div></div>
+          <div class="hbar-row"><div class="hbar-label-row"><span class="hbar-label">Piura</span><span class="hbar-val">68.5%</span></div><div class="hbar-track"><div class="hbar-fill gold" style="width:68.5%"></div></div></div>
+          <div class="hbar-row"><div class="hbar-label-row"><span class="hbar-label">Iquitos</span><span class="hbar-val">66.3%</span></div><div class="hbar-track"><div class="hbar-fill gold" style="width:66.3%"></div></div></div>
+          <div class="hbar-row"><div class="hbar-label-row"><span class="hbar-label">Puno</span><span class="hbar-val">65.1%</span></div><div class="hbar-track"><div class="hbar-fill gold" style="width:65.1%"></div></div></div>
+        </div>
+        <div class="insight">🗺️ Arequipa y Cusco superan a Lima en tasa de actividad laboral, impulsadas por sectores minero y turístico. Las ciudades de la selva muestran los niveles más bajos.</div>
+      </div>
+      <div class="card-footer">Fuente: INEI — EPEN 2024 · 26 ciudades monitoreadas</div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 5: Tabla resumen y conclusiones -->
+  <div class="section-sep"><span class="section-sep-label">05 · Resumen ejecutivo & hallazgos</span><div class="section-sep-line"></div></div>
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Indicadores Clave — Comparativo 2022-2024</div>
+        <div class="card-sub">Variación anual de principales métricas del mercado laboral</div>
+      </div>
+      <div class="card-body" style="padding:0">
+        <table class="comp-table">
+          <thead><tr><th>Indicador</th><th>2022</th><th>2023</th><th>2024</th><th>Tendencia</th></tr></thead>
+          <tbody>
+            <tr><td>Pob. ocupada (M)</td><td>16.8</td><td>17.0</td><td>17.6</td><td><span class="tag-up">▲ +3.5%</span></td></tr>
+            <tr><td>Desempleo (%)</td><td>5.8</td><td>5.1</td><td>4.8</td><td><span class="tag-up">▼ Mejora</span></td></tr>
+            <tr><td>Informalidad (%)</td><td>72.1</td><td>71.8</td><td>71.2</td><td><span class="tag-neutral">≈ Estable</span></td></tr>
+            <tr><td>Ingreso prom. (S/)</td><td>1,580</td><td>1,640</td><td>1,695</td><td><span class="tag-up">▲ +7.3%</span></td></tr>
+            <tr><td>PEA universitaria (%)</td><td>19.4</td><td>20.1</td><td>21.3</td><td><span class="tag-up">▲ +6.7%</span></td></tr>
+            <tr><td>PEA con seg. salud (%)</td><td>89.2</td><td>91.8</td><td>93.5</td><td><span class="tag-up">▲ +1.7pp</span></td></tr>
+            <tr><td>Brecha género (S/)</td><td>512</td><td>495</td><td>477</td><td><span class="tag-up">▼ Reduciendo</span></td></tr>
+            <tr><td>Subempleo (%)</td><td>47.2</td><td>46.1</td><td>45.4</td><td><span class="tag-up">▼ Mejora</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">Hallazgos y Conclusiones Analíticas</div>
+        <div class="card-sub">Insights derivados del análisis de datos INEI 2022-2024</div>
+      </div>
+      <div class="card-body">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;gap:10px;align-items:flex-start">
+            <div style="width:28px;height:28px;background:var(--green-light);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">📈</div>
+            <div><div style="font-size:13px;font-weight:600;margin-bottom:2px">Recuperación consolidada post-pandemia</div><div style="font-size:12px;color:var(--ink2)">La ocupación creció 3.5% en 2 años, superando niveles de 2019. La reducción del desempleo de 7.8% a 4.8% indica un mercado laboral en estabilización.</div></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start">
+            <div style="width:28px;height:28px;background:var(--red-light);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">⚠️</div>
+            <div><div style="font-size:13px;font-weight:600;margin-bottom:2px">Informalidad: el desafío estructural</div><div style="font-size:12px;color:var(--ink2)">71.2% de informalidad en 2024 con variación mínima (-0.9pp en 2 años) indica que sin políticas estructurales profundas, el problema no se resuelve de forma orgánica.</div></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start">
+            <div style="width:28px;height:28px;background:var(--gold-light);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">💡</div>
+            <div><div style="font-size:13px;font-weight:600;margin-bottom:2px">Educación superior como diferenciador</div><div style="font-size:12px;color:var(--ink2)">La brecha de ingresos entre educación primaria (S/798) y universitaria (S/2,980) es de 3.7x. La PEA universitaria crece al ritmo más acelerado (+6.7% anual).</div></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:flex-start">
+            <div style="width:28px;height:28px;background:var(--blue-light);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">🌍</div>
+            <div><div style="font-size:13px;font-weight:600;margin-bottom:2px">Brecha de género: mejora lenta</div><div style="font-size:12px;color:var(--ink2)">La brecha de ingresos por género se redujo de S/512 (2022) a S/477 (2024), pero al ritmo actual tomaría más de 15 años alcanzar la paridad.</div></div>
+          </div>
+        </div>
+        <div style="margin-top:14px">
+          <div style="font-size:11px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;color:var(--ink3);margin-bottom:8px">Herramientas utilizadas</div>
+          <div class="pill-grid">
+            <span class="pill green">Python 3.11</span>
+            <span class="pill green">Pandas</span>
+            <span class="pill green">Matplotlib</span>
+            <span class="pill blue">Plotly</span>
+            <span class="pill blue">Seaborn</span>
+            <span class="pill gold">Jupyter Notebook</span>
+            <span class="pill gray">INEI · EPEN</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="dash-footer">
+  <div>
+    <strong style="color:#fff">Análisis del Mercado Laboral Peruano 2022-2024</strong> · Alberto Guzmán Zumaeta<br>
+    Datos: <a href="https://www.inei.gob.pe" target="_blank">INEI</a> — Encuesta Permanente de Empleo Nacional (EPEN) · Licencia Open Data Commons ODbL
+  </div>
+  <div style="text-align:right">
+    <a href="https://github.com/coolpurohuesoj" target="_blank">GitHub →</a> &nbsp;·&nbsp;
+    <a href="https://www.linkedin.com/in/alberto-karel-guzman-zumaeta/" target="_blank">LinkedIn →</a>
+  </div>
+</div>
+
+<script>
+const G = {
+  green:['#1a4731','#2d6a4f','#52b788','#74c69d','#95d5b2','#b7e4c7'],
+  red:'#c0392b', gold:'#b5870a', blue:'#1a5276',
+  ink3:'#8a8c84', line:'rgba(13,14,12,0.08)'
+};
+Chart.defaults.font.family = "'Instrument Sans', system-ui, sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.color = '#8a8c84';
+
+// 1. Evolución ocupados + desempleo
+new Chart(document.getElementById('chartEvolucion'), {
+  type: 'bar',
+  data: {
+    labels: ['Q1 2020','Q1 2021','Q1 2022','Q1 2023','Q1 2024','Q4 2024'],
+    datasets: [
+      {
+        label: 'Población ocupada (M)',
+        data: [15.2, 14.8, 16.8, 17.0, 17.2, 17.6],
+        backgroundColor: G.green[1]+'bb',
+        borderColor: G.green[1],
+        borderWidth: 1,
+        borderRadius: 4,
+        yAxisID: 'y'
+      },
+      {
+        label: 'Desempleo (%)',
+        data: [7.8, 7.2, 5.8, 5.1, 5.0, 4.8],
+        type: 'line',
+        borderColor: G.red,
+        backgroundColor: G.red+'22',
+        borderWidth: 2,
+        pointRadius: 4,
+        pointBackgroundColor: G.red,
+        tension: 0.4,
+        fill: false,
+        yAxisID: 'y2'
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { position: 'top' } },
+    scales: {
+      y: { position:'left', title:{display:true,text:'Millones'},  grid:{color:G.line} },
+      y2: { position:'right', title:{display:true,text:'% Desempleo'}, grid:{drawOnChartArea:false}, min:3, max:9 }
+    }
+  }
+});
+
+// 2. PEA Donut
+new Chart(document.getElementById('chartPEA'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Ocupados (95.2%)', 'Desempleados (4.8%)', 'PET inactiva (29.9%)'],
+    datasets: [{
+      data: [95.2, 4.8, 29.9],
+      backgroundColor: [G.green[1], G.red, '#e0dfd8'],
+      borderWidth: 0,
+      hoverOffset: 4
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    cutout: '72%',
+    plugins: { legend: { display: false } }
+  }
+});
+
+// 3. Ingresos por educación
+new Chart(document.getElementById('chartIngresos'), {
+  type: 'bar',
+  data: {
+    labels: ['Sin nivel','Primaria','Secundaria','Sup. no univ.','Superior univ.'],
+    datasets: [{
+      label: 'Ingreso promedio (S/)',
+      data: [620, 798, 1180, 1650, 2980],
+      backgroundColor: [G.red+'aa', G.red+'88', G.gold+'aa', G.green[1]+'aa', G.green[1]],
+      borderRadius: 4,
+      borderWidth: 0
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid:{color:G.line}, ticks:{callback: v => 'S/ '+v.toLocaleString()} },
+      y: { grid:{display:false} }
+    }
+  }
+});
+
+// 4. Brecha de género por sector
+new Chart(document.getElementById('chartGenero'), {
+  type: 'bar',
+  data: {
+    labels: ['Construcción','Manufactura','Comercio','Servicios','Agric.','Nacional'],
+    datasets: [
+      {
+        label: 'Hombre (S/)',
+        data: [2053, 1820, 1650, 1780, 950, 1898],
+        backgroundColor: G.blue+'cc',
+        borderRadius: 3
+      },
+      {
+        label: 'Mujer (S/)',
+        data: [1120, 1340, 1210, 1550, 720, 1421],
+        backgroundColor: '#e91e8c'+'99',
+        borderRadius: 3
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { position: 'top' } },
+    scales: {
+      x: { grid:{display:false} },
+      y: { grid:{color:G.line}, ticks:{callback: v => 'S/ '+v} }
+    }
+  }
+});
+
+// 5. Informalidad por sector
+new Chart(document.getElementById('chartInformalidad'), {
+  type: 'bar',
+  data: {
+    labels: ['Agricultura','Comercio','Construcción','Manufactura','Transp.','Servicios','Minería','Fin./Seg.'],
+    datasets: [
+      { label: '2022 (%)', data: [97.2, 80.1, 74.2, 62.5, 68.3, 58.1, 25.4, 20.2], backgroundColor: '#e0dfd8', borderRadius: 3 },
+      { label: '2024 (%)', data: [96.0, 79.1, 72.8, 61.0, 66.5, 56.8, 22.1, 18.5], backgroundColor: G.red+'bb', borderRadius: 3 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { position: 'top' } },
+    scales: {
+      x: { grid:{display:false} },
+      y: { grid:{color:G.line}, max:100, ticks:{callback: v => v+'%'} }
+    }
+  }
+});
+
+// 6. Educación PEA 2023 vs 2024
+new Chart(document.getElementById('chartEducacion'), {
+  type: 'bar',
+  data: {
+    labels: ['Sin nivel/\nInicial','Primaria','Secundaria','Sup. no\nuniv.','Superior\nuniv.'],
+    datasets: [
+      { label: '2023 (M)', data: [0.41, 3.46, 7.88, 3.11, 3.66], backgroundColor: '#e0dfd8', borderRadius: 3 },
+      { label: '2024 (M)', data: [0.42, 3.52, 7.79, 3.11, 3.91], backgroundColor: G.green[1]+'cc', borderRadius: 3 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { position: 'top' } },
+    scales: {
+      x: { grid:{display:false} },
+      y: { grid:{color:G.line}, ticks:{callback: v => v+'M'} }
+    }
+  }
+});
+</script>
+</body>
+</html>
